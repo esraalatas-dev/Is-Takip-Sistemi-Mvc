@@ -1,0 +1,45 @@
+﻿@model IsTakipSistemiMvc.Models.Durum
+
+@{
+    ViewBag.Title = "Durum Detayı";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0"><i class="fas fa-info-circle"></i> Durum Detayı</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 text-muted">Durum Adı</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.DurumAd == "Yapıldı")
+                        {<span class="badge bg-success fs-5">@Model.DurumAd</span> }
+                    else if (Model.DurumAd == "Yapılıyor")
+                    { <span class="badge bg-warning text-dark fs-5">@Model.DurumAd</span> }
+                else
+                { <span class="badge bg-secondary fs-5">@Model.DurumAd</span>}
+                    </dd>
+
+                    <dt class="col-sm-4 text-muted mt-3">İlgili İş Sayısı</dt>
+                    <dd class="col-sm-8 mt-3">
+                        <span class="badge bg-light text-dark border p-2">
+                            <i class="fas fa-tasks text-primary"></i>
+                            @(Model.Isler != null ? Model.Isler.Count : 0) Adet İş
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+            <div class="card-footer bg-white">
+                <a href="@Url.Action("Edit", new { id = Model.DurumId })" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Düzenle
+                </a>
+                <a href="@Url.Action("Index")" class="btn btn-outline-secondary ms-2">
+                    Listeye Dön
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

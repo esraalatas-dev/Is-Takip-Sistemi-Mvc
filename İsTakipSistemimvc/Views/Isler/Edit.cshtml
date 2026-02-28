@@ -1,0 +1,78 @@
+﻿@model IsTakipSistemiMvc.Models.Is
+
+@{
+    ViewBag.Title = "İşi Güncelle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0"><i class="fas fa-edit"></i> İşi Düzenle</h4>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.IsId)
+
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">İş Başlığı</label>
+                            @Html.EditorFor(model => model.Baslik, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Açıklama</label>
+                            @Html.TextAreaFor(
+                            model => model.Aciklama,
+                            new { @class = "form-control", rows = "5", @id = "editor" }
+                            )
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Tarih</label>
+                                @Html.EditorFor(model => model.Tarih, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Personel</label>
+                                @Html.DropDownList("PersonelId", null, htmlAttributes: new { @class = "form-select" })
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Durum</label>
+                            @Html.DropDownList("DurumId", null, htmlAttributes: new { @class = "form-select" })
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="@Url.Action("Index")" class="btn btn-secondary me-2">
+                                <i class="fas fa-arrow-left"></i> İptal
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-sync-alt"></i> Güncelle
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@*sayfa tamamen yüklendiğinde ve editör kütüphanesi hazır olduğunda devreye girmesini sağlayan güvenlik kodu.(ckeditör).*@
+@section scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (typeof CKEDITOR !== 'undefined') {
+                CKEDITOR.replace('editor');
+            }
+        });
+    </script>
+}
+

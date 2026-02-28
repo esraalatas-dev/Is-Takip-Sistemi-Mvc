@@ -1,0 +1,43 @@
+﻿@model IsTakipSistemiMvc.Models.YetkiTur
+
+@{
+    ViewBag.Title = "Yetki Detayı";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0"><i class="fas fa-info-circle"></i> Yetki Detayı</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 text-muted">Yetki Adı</dt>
+                    <dd class="col-sm-8 fw-bold fs-5">
+                        @if (Model.YetkiAd == "Yönetici")
+                        {<span class="text-danger">@Model.YetkiAd</span> }
+                    else
+                    { <span class="text-primary">@Model.YetkiAd</span>}
+                    </dd>
+
+                    <dt class="col-sm-4 text-muted mt-3">Kullanıcı Sayısı</dt>
+                    <dd class="col-sm-8 mt-3">
+                        <span class="badge bg-light text-dark border p-2">
+                            <i class="fas fa-users text-primary"></i>
+                            @(Model.Personeller != null ? Model.Personeller.Count : 0) Kişi
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+            <div class="card-footer bg-white">
+                <a href="@Url.Action("Edit", new { id = Model.YetkiTurId })" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Düzenle
+                </a>
+                <a href="@Url.Action("Index")" class="btn btn-outline-secondary ms-2">
+                    Listeye Dön
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

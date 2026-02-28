@@ -1,0 +1,51 @@
+﻿@model IsTakipSistemiMvc.Models.Personel
+
+@{
+    ViewBag.Title = "Personel Detayı";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Personel Detayı</h4>
+            </div>
+
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width:200px;">Ad Soyad</th>
+                        <td>@Model.AdSoyad</td>
+                    </tr>
+                    <tr>
+                        <th>Kullanıcı Adı</th>
+                        <td>@Model.KullaniciAd</td>
+                    </tr>
+                    <tr>
+                        <th>Birim</th>
+                        <td>@(Model.Birim != null ? Model.Birim.BirimAd : "-")</td>
+                    </tr>
+                    <tr>
+                        <th>Yetki</th>
+                        <td>@(Model.YetkiTur != null ? Model.YetkiTur.YetkiAd : "-")</td>
+                    </tr>
+                    <tr>
+                        <th>Telefon</th>
+                        <td>@Model.Telefon</td>
+                    </tr>
+                </table>
+
+                <a href="@Url.Action("Edit", new { id = Model.PersonelId })"
+                   class="btn btn-warning">
+                    Düzenle
+                </a>
+
+                <a href="@Url.Action("Index")"
+                   class="btn btn-secondary ms-2">
+                    Geri Dön
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

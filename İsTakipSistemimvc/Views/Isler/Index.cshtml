@@ -1,0 +1,94 @@
+﻿@model IEnumerable<IsTakipSistemiMvc.Models.Is>
+@using IsTakipSistemiMvc.Helper <!-- View içinde SeoHelper sınıfını kullanmak için ekledim -->
+
+@{
+    ViewBag.Title = "İş Listesi";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- DATA TABLES tetikleyici kodlar -->
+<script type="text/javascript">
+    var $j = jQuery.noConflict(true);
+    $j(document).ready(function () {
+        $j('#myTable').DataTable({      /*Bu tabloyu DataTable yap*/
+
+            "language": { "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/Turkish.json" }/* türkçe dil desteği*/
+        });
+    });
+</script>
+
+
+<!-- ÜST KISIM -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-list"></i> İş Listesi</h2>
+    <a href="@Url.Action("Create")" class="btn btn-primary shadow-sm">
+        <i class="fas fa-plus"></i> Yeni İş Ekle
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <!-- HOCANIN İSTEDİĞİ DATA TABLE ID'Sİ(kimlik) -->
+        <table id="myTable" class="table table-hover table-bordered mb-0 align-middle">
+            @*ıd verdik tabloya*@
+            <thead class="table-light">
+                <tr>
+                    <th>Başlık</th>
+                    <th>Açıklama</th>
+                    <th>Tarih</th>
+                    <th>Personel</th>
+                    <th>Durum</th>
+                    <th style="width: 200px;" class="text-center">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-bold text-primary">@Html.DisplayFor(modelItem => item.Baslik)</td>
+                        <td>
+                            <!-- HTML Kodlarını Temizle (Kısa Gösterim) -->
+                            @if (!string.IsNullOrEmpty(item.Aciklama) && item.Aciklama.Length > 50)
+                            {
+                                @Html.Raw(item.Aciklama.Substring(0, 50) + "...")
+                            }
+                            else
+                            {
+                                @Html.Raw(item.Aciklama)
+                            }
+                        </td>
+                        <td>@item.Tarih.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            @if (item.Personel != null)
+                            {
+                                <span class="badge bg-info text-dark"><i class="fas fa-user"></i> @item.Personel.AdSoyad</span>
+                            }
+                            else
+                            { <span class="badge bg-secondary">Atanmamış</span>}
+                        </td>
+                        <td>
+                            @if (item.Durum != null)
+                            {
+                                <span class="badge bg-secondary">@item.Durum.DurumAd</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            <a href="@Url.Action("Edit", new { id=item.IsId })" class="btn btn-sm btn-warning" title="Güncelle"><i class="fas fa-edit"></i></a>
+
+                            <!-- Detay linki -->
+                            @*default gelen routing değil bizim manuel oluşturduğumuz seo url*@
+
+                            <a href="/is-detay/@SeoHelper.ToSeoUrl(item.Baslik)-@item.IsId"
+                               class="btn btn-sm btn-info">
+                                Detay
+                            </a>
+
+                            <a href="@Url.Action("Delete", new { id=item.IsId })" class="btn btn-sm btn-danger" title="Sil"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

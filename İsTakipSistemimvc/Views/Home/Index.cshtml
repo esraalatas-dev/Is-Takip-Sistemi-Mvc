@@ -1,0 +1,142 @@
+﻿@using IsTakipSistemiMvc.Models
+@using IsTakipSistemiMvc.Helper <!-- BU SATIR ZORUNLU -->
+@model List<Is>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>İş Takip Sistemi - Ana Sayfa</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .job-card {
+            transition: transform 0.3s;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+            .job-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .read-more-btn {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Başlık Alanı -->
+    <div class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold">🚀 Şirket İş Takip Portalı</h1>
+            <p class="lead">Güncel görevleri ve durumlarını buradan takip edebilirsiniz.</p>
+            <!-- Admin Giriş Linki -->
+            <a href="/Login/Index" class="btn btn-outline-light mt-3">
+                <i class="fas fa-user-shield"></i> Yönetici Girişi
+            </a>
+        </div>
+    </div>
+
+    <!-- İş Listesi -->
+    <div class="container mb-5">
+        <div class="row">
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card job-card h-100">
+                            <!-- Durum Rozeti -->
+                            @if (item.Durum != null)
+                            {
+                                <span class="badge bg-@(item.Durum.DurumAd == "Yapıldı" ? "success" : "warning") status-badge">
+                                    @item.Durum.DurumAd
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary status-badge">Durum Belirsiz</span>
+                            }
+
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">@item.Baslik</h5>
+                                <h6 class="card-subtitle mb-3 text-muted">
+                                    <i class="fas fa-user"></i>
+                                    @(item.Personel != null ? item.Personel.AdSoyad : "Personel Atanmamış")
+                                </h6>
+
+                                <!-- Açıklama (Kısa Gösterim) -->
+                                <p class="card-text">
+                                    @if (item.Aciklama != null && item.Aciklama.Length > 100)
+                                    {
+                                        // Html.Raw kullanıyoruz çünkü CKEditor HTML veriyor
+                                        @Html.Raw(item.Aciklama.Substring(0, 100) + "...")
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(item.Aciklama)
+                                    }
+                                </p>
+                            </div>
+
+                            <div class="card-footer bg-white text-muted border-0 d-flex justify-content-between align-items-center">
+                                <small><i class="far fa-calendar-alt"></i> @item.Tarih.ToString("dd.MM.yyyy")</small>
+
+                                <!--
+                                    HATA DÜZELTİLDİ:
+                                    item.BirimAd yerine item.Baslik (İş Başlığı) kullanıldı.
+                                    Link formatı: /IsDetay/stok-sayimi-5
+                                -->
+                                <a href="/IsDetay/@SeoHelper.ToSeoUrl(item.Baslik)-@item.IsId" class="read-more-btn">
+                                    İncele <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (Model.Count == 0)
+                {
+                    <div class="col-12 text-center text-muted mt-5">
+                        <h3><i class="fas fa-box-open"></i> Henüz kayıtlı iş bulunmuyor.</h3>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+</body>
+</html>

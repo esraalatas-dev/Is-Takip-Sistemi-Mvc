@@ -1,0 +1,36 @@
+﻿@model IsTakipSistemiMvc.Models.Birim
+
+@{
+    ViewBag.Title = "Departman Sil";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card border-danger shadow">
+            <div class="card-header bg-danger text-white text-center">
+                <h3><i class="fas fa-trash-alt"></i> Silme Onayı</h3>
+            </div>
+            <div class="card-body text-center">
+                <h5 class="card-title text-danger mb-4">Bu departmanı silmek istediğinize emin misiniz?</h5>
+
+                <div class="alert alert-light border py-3">
+                    <h3><i class="far fa-building text-muted"></i> @Html.DisplayFor(model => model.BirimAd)</h3>
+                </div>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="mt-4">
+                        <a href="@Url.Action("Index")" class="btn btn-secondary me-2">
+                            <i class="fas fa-times"></i> Vazgeç
+                        </a>
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="fas fa-trash"></i> Evet, Sil
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

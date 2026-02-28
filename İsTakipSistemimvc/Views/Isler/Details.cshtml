@@ -1,0 +1,81 @@
+﻿@model IsTakipSistemiMvc.Models.Is
+
+@{
+    ViewBag.Title = "İş Detayı";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0"><i class="fas fa-info-circle"></i> İş Detayları</h4>
+            </div>
+
+            <div class="card-body">
+                @if (Model != null)
+                {
+                    <dl class="row">
+                        <dt class="col-sm-3 text-muted">İş Başlığı</dt>
+                        <dd class="col-sm-9 fw-bold">@Html.DisplayFor(model => model.Baslik)</dd>
+
+                        <dt class="col-sm-3 text-muted">Açıklama</dt>
+                        @*CKEditor ile yazılmış kalın, liste, paragraf, link gibi biçimlendirmeleri bozmadan gösterir.*@
+                        <dd class="col-sm-9">
+                            <div class="border rounded p-3 bg-light">
+                                @Html.Raw(Model.Aciklama)
+                            </div>
+                        </dd>
+
+
+                        <dt class="col-sm-3 text-muted">Tarih</dt>
+                        <dd class="col-sm-9">@Model.Tarih.ToString("dd MMMM yyyy, HH:mm")</dd>
+
+                        <dt class="col-sm-3 text-muted">Sorumlu</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge bg-light text-dark border">
+                                <i class="fas fa-user"></i>
+                                @(Model.Personel != null ? Model.Personel.AdSoyad : "Atanmamış")
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-3 text-muted">Durum</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.Durum != null)
+                            {
+                                string badgeClass = "bg-secondary";
+                                if (Model.Durum.DurumAd == "Yapıldı") { badgeClass = "bg-success"; }
+                                else if (Model.Durum.DurumAd == "Yapılıyor") { badgeClass = "bg-warning text-dark"; }
+
+                                <span class="badge @badgeClass">@Model.Durum.DurumAd</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Durum Belirsiz</span>
+                            }
+                        </dd>
+                    </dl>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Aradığınız iş kaydı bulunamadı veya silinmiş.
+                    </div>
+                }
+            </div>
+
+            <div class="card-footer bg-white">
+                @if (Model != null)
+                {
+                    <a href="@Url.Action("Edit", new { id = Model.IsId })" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Düzenle
+                    </a>
+                }
+                <a href="@Url.Action("Index")" class="btn btn-outline-secondary ms-2">
+                    Listeye Dön
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
